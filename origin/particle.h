@@ -11,14 +11,5 @@ namespace origin {
 	struct particle : view_particle {
 		augs::vec2<> vel;
 		float mass = 1.f;
-
-
-		//void set_velocity(augs::vec2<> fraction) {
-		//	int speed = 1 / fraction.length();
-		//	fraction *= speed;
-		//	vel = int();
-		//	motion_substeps = 0;
-		//}
-		//float mass;
 	};
 }

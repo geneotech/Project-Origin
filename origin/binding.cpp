@@ -17,7 +17,7 @@ namespace origin {
 				luabind::class_<slot>("origin_slot")
 				.def(luabind::constructor<>())
 				.def_readwrite("occupied", &slot::occupied)
-				.def_readwrite("data", &slot::data),
+				.def_readwrite("data", &slot::active_index),
 
 				augs::misc::vector_wrapper<particle>::bind_vector("particle_vector"),
 

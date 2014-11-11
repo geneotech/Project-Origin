@@ -1,0 +1,21 @@
+Floats are also discrete, just the grid is way more dense.
+
+Now if we consider velocity offset v = (1.0, 1.0 - epsilon), even though field-wise it can be represented like (eps * i1, eps * (i1 - 1))
+it does not mean that the line connecting them is non-bresenham.
+
+So we can basically define particle velocities in integers only to specify direction, for example (10, 9) and define particle speed as an interval.
+The particle should now fly on bresenham path.
+Assuming that speed of light c = 1 field per simulation step, 
+we should think of supporting more speeds than just c/i where i is integer. For example, sometimes it needs 2 steps, sometimes it needs 3.
+Same way floating points work when it comes to rasterization.
+
+
+It is that by floating points we fit a dense grid per every pixel and thus we are able to depict directions accurately even though
+underlying movement lines are non-bresenham.
+
+We could as well do it on integers and not worry about bresenham (it works on floats this way), 
+the only problem is that in order to handle collisions we need to transfer particles gradually, slot by slot.
+
+We will treat float-based approach as a reasonable approximation of the proper discretization, a draft.
+It is then premature optimization to use integers (a more complex approach).
+Should we see stability problems, we'll switch to Bresenham and interval-based movement.

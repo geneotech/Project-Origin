@@ -18,15 +18,53 @@ function atom(entry)
 	return new_particle
 end
 
-for i=1, 100 do
-	for j=1, 100 do
+for i=200, 1, -1 do
+	for j=200, 1, -1 do
 		universe.particles:add(atom {
 			pos = vec2(config_table.resolution_w/2 + i, config_table.resolution_h/2 + j),
-			color = rgba(255 - i - j, 255 - i - j, 255 - i - j, 255),
-			vel = vec2(randval(-0.2, 0.2), randval(-0.2, 0.2))
+			color = rgba(0, 255-i*j/40000*255-j+i, i*j/40000*255+j-i, 255),
+			mass = 1
 		})
 	end
 end
+	
+
+for i=1, 20 do
+	--for j=1, 200 do
+	--	--universe.particles:add(atom {
+	--	--	pos = vec2(config_table.resolution_w/2 + i, config_table.resolution_h/2 + j),
+	--	--	color = rgba(0, randval(0, 255), randval(0, 255), 255),
+	--	--	vel = vec2(randval(-1.0, 1), randval(-1.0, 1)):normalize()
+	--	--})
+	--end
+	
+	
+		--universe.particles:add(atom {
+		--	pos = vec2(config_table.resolution_w/2, config_table.resolution_h/2 + i),
+		--	color = rgba(0, 255, 255, 255),
+		--	vel = vec2(randval(0.02, 0.025), 0)
+		--})	
+	for j=1, 20 do
+		universe.particles:add(atom {
+			pos = vec2(config_table.resolution_w/2 + 600 + j, config_table.resolution_h/2 + i + 150),
+			color = rgba(255,  0, 0, 255),
+			vel = vec2(-randval(0.6, 0.6), -randval(0.016, 0.016)),
+			mass = 0.1
+		})
+	end
+end
+
+for i=1, 20 do	
+	for j=1, 20 do
+		universe.particles:add(atom {
+			pos = vec2(config_table.resolution_w/2 - 600 + j, config_table.resolution_h/2 + i + 50),
+			color = rgba(255,  0, 0, 255),
+			vel = vec2(randval(0.6, 0.6), randval(0.016, 0.016)),
+			mass = 0.1
+		})
+	end
+end
+
 
 universum_camera = create_world_camera_entity(world, function() 
 	universe:render()
@@ -61,6 +99,7 @@ while not SHOULD_QUIT_FLAG do
 	world:consume_events()
 	
 	universe:simulate()
+	--universe.particles:at(randval(0, 200*200-1)).vel = vec2(randval(-7.0, 7), randval(-7.0, 7))
 	world:render()
 	
 	if call_once_after_loop ~= nil then

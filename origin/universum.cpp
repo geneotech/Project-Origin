@@ -15,12 +15,47 @@ namespace origin {
 
 		for (size_t i = 0; i < particles.size(); ++i) {
 			auto& p = particles[i];
-			
-			p.pos += p.vel;
-			p.pos.x = fmod(p.pos.x, size.w);
-			p.pos.y = fmod(p.pos.y, size.h);
 
+			//auto secs = color_timer.get<std::chrono::seconds>();
+			//auto col_val = (int(color_timer.get<std::chrono::seconds>() * 255) % 255);
+			//
+			//p.color.g = int(secs) % 2 ? col_val : 255 - col_val;
+
+			auto& x = p.pos.x;
+			auto& y = p.pos.y;
+			slot& old_slot = get_slot(int(x), int(y));
+
+			p.pos += p.vel;
+			x = x < 0 ? size.w + x - 1 : (x >= size.w ? x - size.w : x);
+			y = y < 0 ? size.h + y - 1 : (y >= size.h ? y - size.h : y);
+
+			old_slot.occupied = false;
 			view_buffer[i] = p;
+		}
+		
+		// resolve collisions
+
+		for (size_t i = 0; i < particles.size(); ++i) {
+			auto& p = particles[i];
+			auto& x = p.pos.x;
+			auto& y = p.pos.y;
+
+			slot& new_slot = get_slot(int(x), int(y));
+
+			if (new_slot.occupied) {
+				auto& p2 = particles[new_slot.active_index];
+				auto p1_vel = p.vel;
+
+				p.vel = (p.vel * (p.mass - p2.mass) + (2 * p2.mass * p2.vel)) / (p.mass + p2.mass);
+				p2.vel = (p2.vel * (p2.mass - p.mass) + (2 * p.mass * p1_vel)) / (p2.mass + p.mass);
+
+				new_slot.occupied = false;
+			}
+			else {
+				new_slot.occupied = true;
+			}
+
+			new_slot.active_index = i;
 		}
 	}
 
@@ -45,5 +80,4 @@ namespace origin {
 	universum::slot& universum::get_slot(int x, int y) {
 		return space[y*size.w + x];
 	}
-
 }
