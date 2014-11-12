@@ -9,6 +9,14 @@ namespace origin {
 		space.resize(size.area());
 	}
 
+	void universum::add_static(const particle& p) {
+		static_particles.push_back(p);
+		get_slot(int(p.pos.x), int(p.pos.y)).is_static = true;
+		get_slot(int(p.pos.x), int(p.pos.y)).active_index = static_particles.size()-1;
+
+		static_view_buffer.push_back(p);
+	}
+
 	void universum::simulate() {
 		view_buffer.clear();
 		view_buffer.resize(particles.size());
@@ -42,20 +50,24 @@ namespace origin {
 
 			slot& new_slot = get_slot(int(x), int(y));
 
-			if (new_slot.occupied) {
-				auto& p2 = particles[new_slot.active_index];
-				auto p1_vel = p.vel;
-
-				p.vel = (p.vel * (p.mass - p2.mass) + (2 * p2.mass * p2.vel)) / (p.mass + p2.mass);
-				p2.vel = (p2.vel * (p2.mass - p.mass) + (2 * p.mass * p1_vel)) / (p2.mass + p.mass);
-
-				new_slot.occupied = false;
+			if (new_slot.is_static) {
+				p.vel = -p.vel;
 			}
 			else {
-				new_slot.occupied = true;
-			}
+				if (new_slot.occupied) {
+					auto& p2 = particles[new_slot.active_index];
+					auto p1_vel = p.vel;
 
-			new_slot.active_index = i;
+					p.vel = (p.vel * (p.mass - p2.mass) + (2 * p2.mass * p2.vel)) / (p.mass + p2.mass);
+					p2.vel = (p2.vel * (p2.mass - p.mass) + (2 * p.mass * p1_vel)) / (p2.mass + p.mass);
+
+					new_slot.occupied = false;
+				}
+				else {
+					new_slot.occupied = true;
+				}
+				new_slot.active_index = i;
+			}
 		}
 	}
 
@@ -75,6 +87,8 @@ namespace origin {
 	void universum::render() {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(view_particle) * view_buffer.size(), view_buffer.data(), GL_STREAM_DRAW);
 		glDrawArrays(GL_POINTS, 0, view_buffer.size());
+		glBufferData(GL_ARRAY_BUFFER, sizeof(view_particle) * static_view_buffer.size(), static_view_buffer.data(), GL_STREAM_DRAW);
+		glDrawArrays(GL_POINTS, 0, static_view_buffer.size());
 	}
 
 	universum::slot& universum::get_slot(int x, int y) {

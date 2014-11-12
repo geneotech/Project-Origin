@@ -26,6 +26,7 @@ namespace origin {
 				.def("get_slot", &universum::get_slot)
 				.def("simulate", &universum::simulate)
 				.def("render", &universum::render)
+				.def("add_static", &universum::add_static)
 				.def("init_render_state", &universum::init_render_state)
 				.def_readwrite("particles", &universum::particles)
 		];

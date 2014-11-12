@@ -20,15 +20,24 @@ end
 
 for i=200, 1, -1 do
 	for j=200, 1, -1 do
-		universe.particles:add(atom {
+		universe:add_static(atom {
 			pos = vec2(config_table.resolution_w/2 + i, config_table.resolution_h/2 + j),
 			color = rgba(0, 255-i*j/40000*255-j+i, i*j/40000*255+j-i, 255),
 			mass = 1
 		})
 	end
 end
-	
 
+
+for i=20, 1200 do
+	universe:add_static(atom {
+		pos = vec2(i, config_table.resolution_h - 20),
+		color = rgba(255, 255, 255, 255)
+	})
+end
+
+	
+	
 for i=1, 20 do
 	--for j=1, 200 do
 	--	--universe.particles:add(atom {

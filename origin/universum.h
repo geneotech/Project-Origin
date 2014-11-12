@@ -12,13 +12,18 @@ namespace origin {
 	struct universum {
 		struct slot {
 			bool occupied = false;
+			bool is_static = false;
 			size_t active_index;
 		};
 
 		std::vector<slot> space;
 		std::vector<particle> particles;
+		std::vector<particle> static_particles;
+		
+		void add_static(const particle&);
 
 		std::vector<view_particle> view_buffer;
+		std::vector<view_particle> static_view_buffer;
 
 		slot& get_slot(int x, int y);
 		slot& map_slot(float x, float y);
