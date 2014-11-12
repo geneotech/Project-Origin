@@ -12,7 +12,7 @@ int main() {
 	framework::bind_whole_engine(lua_state);
 	origin::universum::bind(lua_state);
 
-	lua_state.dofile("init.lua");
+	lua_state.dofile("init.lua");  
 
 	framework::deinit();
 	return 0;

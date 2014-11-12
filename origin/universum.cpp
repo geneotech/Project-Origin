@@ -56,8 +56,8 @@ namespace origin {
 			slot& new_slot = get_slot(int(x), int(y));
 
 			if (new_slot.is_static) {
-				p.vel = -p.vel;
-				p.pos += p.vel;
+				p.vel = -p.vel * p.restitution;
+				//p.pos += p.vel;
 			}
 			else {
 				if (new_slot.occupied) {
@@ -73,8 +73,8 @@ namespace origin {
 					p2.vel = (p2.restitution * p.mass * (p1_vel - p2.vel) + p2.mass * p2.vel + p.mass * p1_vel);
 					p2.vel *= (1 / (p2.mass + p.mass));
 
-					p.pos += p.vel;
-					p2.pos += p2.vel;
+					//p.pos += p.vel;
+					//p2.pos += p2.vel;
 					new_slot.occupied = false;
 				}
 				else {
