@@ -11,5 +11,7 @@ namespace origin {
 	struct particle : view_particle {
 		augs::vec2<> vel;
 		float mass = 1.f;
+		float gravity_mult = 0.f;
+		float restitution = 0.f;
 	};
 }

@@ -18,12 +18,22 @@ function atom(entry)
 	return new_particle
 end
 
+universe.gravity = vec2(0, 0.0001)
+
 for i=200, 1, -1 do
 	for j=200, 1, -1 do
-		universe:add_static(atom {
-			pos = vec2(config_table.resolution_w/2 + i, config_table.resolution_h/2 + j),
+		--universe:add_static(atom {
+		--	pos = vec2(config_table.resolution_w/2 + i, config_table.resolution_h/2 + j),
+		--	color = rgba(0, 255-i*j/40000*255-j+i, i*j/40000*255+j-i, 255),
+		--	mass = 1
+		--})
+		
+		universe.particles:add(atom {
+			pos = vec2(config_table.resolution_w/2 + i, config_table.resolution_h - 20 - 200 + j - 1),
 			color = rgba(0, 255-i*j/40000*255-j+i, i*j/40000*255+j-i, 255),
-			mass = 1
+			mass = 1,
+			gravity_mult = 1,
+			restitution = 1
 		})
 	end
 end
@@ -53,25 +63,25 @@ for i=1, 20 do
 		--	color = rgba(0, 255, 255, 255),
 		--	vel = vec2(randval(0.02, 0.025), 0)
 		--})	
-	for j=1, 20 do
-		universe.particles:add(atom {
-			pos = vec2(config_table.resolution_w/2 + 600 + j, config_table.resolution_h/2 + i + 150),
-			color = rgba(255,  0, 0, 255),
-			vel = vec2(-randval(0.6, 0.6), -randval(0.016, 0.016)),
-			mass = 0.1
-		})
-	end
+	-- for j=1, 20 do
+	-- 	universe.particles:add(atom {
+	-- 		pos = vec2(config_table.resolution_w/2 + 600 + j, config_table.resolution_h/2 + i + 150),
+	-- 		color = rgba(255,  0, 0, 255),
+	-- 		vel = vec2(-randval(0.6, 0.6), -randval(0.016, 0.016)),
+	-- 		mass = 0.1
+	-- 	})
+	-- end
 end
 
 for i=1, 20 do	
-	for j=1, 20 do
-		universe.particles:add(atom {
-			pos = vec2(config_table.resolution_w/2 - 600 + j, config_table.resolution_h/2 + i + 50),
-			color = rgba(255,  0, 0, 255),
-			vel = vec2(randval(0.6, 0.6), randval(0.016, 0.016)),
-			mass = 0.1
-		})
-	end
+	-- for j=1, 20 do
+	-- 	universe.particles:add(atom {
+	-- 		pos = vec2(config_table.resolution_w/2 - 600 + j, config_table.resolution_h/2 + i + 50),
+	-- 		color = rgba(255,  0, 0, 255),
+	-- 		vel = vec2(randval(0.6, 0.6), randval(0.016, 0.016)),
+	-- 		mass = 0.1
+	-- 	})
+	-- end
 end
 
 

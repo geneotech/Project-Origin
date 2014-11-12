@@ -12,6 +12,8 @@ namespace origin {
 				.def_readwrite("color", &particle::color)
 				.def_readwrite("pos", &particle::pos)
 				.def_readwrite("vel", &particle::vel)
+				.def_readwrite("gravity_mult", &particle::gravity_mult)
+				.def_readwrite("restitution", &particle::restitution)
 				.def_readwrite("mass", &particle::mass),
 
 				luabind::class_<slot>("origin_slot")
@@ -28,6 +30,7 @@ namespace origin {
 				.def("render", &universum::render)
 				.def("add_static", &universum::add_static)
 				.def("init_render_state", &universum::init_render_state)
+				.def_readwrite("gravity", &universum::gravity)
 				.def_readwrite("particles", &universum::particles)
 		];
 	}

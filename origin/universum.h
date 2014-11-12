@@ -16,6 +16,8 @@ namespace origin {
 			size_t active_index;
 		};
 
+		augs::vec2<> gravity;
+
 		std::vector<slot> space;
 		std::vector<particle> particles;
 		std::vector<particle> static_particles;

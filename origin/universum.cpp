@@ -33,6 +33,11 @@ namespace origin {
 			auto& y = p.pos.y;
 			slot& old_slot = get_slot(int(x), int(y));
 
+			p.vel += p.gravity_mult * gravity;
+			
+			if (p.vel.length_sq() > 1.f)
+				p.vel.normalize();
+			
 			p.pos += p.vel;
 			x = x < 0 ? size.w + x - 1 : (x >= size.w ? x - size.w : x);
 			y = y < 0 ? size.h + y - 1 : (y >= size.h ? y - size.h : y);
@@ -52,15 +57,24 @@ namespace origin {
 
 			if (new_slot.is_static) {
 				p.vel = -p.vel;
+				p.pos += p.vel;
 			}
 			else {
 				if (new_slot.occupied) {
 					auto& p2 = particles[new_slot.active_index];
 					auto p1_vel = p.vel;
 
-					p.vel = (p.vel * (p.mass - p2.mass) + (2 * p2.mass * p2.vel)) / (p.mass + p2.mass);
-					p2.vel = (p2.vel * (p2.mass - p.mass) + (2 * p.mass * p1_vel)) / (p2.mass + p.mass);
+					//p.vel = (p.vel * (p.mass - p2.mass) + (2 * p2.mass * p2.vel)) / (p.mass + p2.mass);
+					//p2.vel = (p2.vel * (p2.mass - p.mass) + (2 * p.mass * p1_vel)) / (p2.mass + p.mass);
+					// * p2.mass * (p2.vel - p.vel) + (p.mass * p.vel) + (p2.mass * p2.vel))
+					p.vel = (p.restitution * p2.mass * (p2.vel - p.vel) + p.mass * p.vel + p2.mass * p2.vel);
+					p.vel *= (1 / (p.mass + p2.mass));
+					
+					p2.vel = (p2.restitution * p.mass * (p1_vel - p2.vel) + p2.mass * p2.vel + p.mass * p1_vel);
+					p2.vel *= (1 / (p2.mass + p.mass));
 
+					p.pos += p.vel;
+					p2.pos += p2.vel;
 					new_slot.occupied = false;
 				}
 				else {
