@@ -19,3 +19,16 @@ the only problem is that in order to handle collisions we need to transfer parti
 We will treat float-based approach as a reasonable approximation of the proper discretization, a draft.
 It is then premature optimization to use integers (a more complex approach).
 Should we see stability problems, we'll switch to Bresenham and interval-based movement.
+
+One could say that the floating point position represents energy charge.
+When the two particles collide they exchange energy in finite speed.
+
+
+Problem is that once we resolve a collision like this:
+
+
+[v=0.6] <=> [v=1.6]
+
+it is interpreted like the particles hit the other way.
+So we would have to consider transfer of kinetic energy.
+Or just consider relative positions.
