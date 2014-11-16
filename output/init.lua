@@ -20,29 +20,36 @@ end
 
 universe.gravity = vec2(0, 0.0001)
 
-universe.particles:add(atom {
-			pos = vec2(0, 3),
-			color = rgba(255, 0, 0, 255),
-			mass = 5,
-			gravity_mult = 0,
-			restitution = 1,
-			vel = vec2(0.001, 0)
-		})
+
+for i=1, 80 do
+for j=1, 40 do
+	universe.particles:add(atom {
+				pos = vec2(650 + 0.5+i*2, config_table.resolution_h - 50 + j*2 + 0.5 - 100),
+				color = rgba(255, 0, 0, 255),
+				mass = 5000,
+				gravity_mult = 2,
+				restitution = 50,
+				vel = vec2(-0.6, -0.1)
+			})
+end
+end
 		
-for i=1, 10 do
+for i=1, 150 do
+	for j=1, 150 do
+		universe.particles:add(atom {
+			pos = vec2(250 + 20 + i*2 + 0.5-150,  config_table.resolution_h - 20 - 161 + 3.5 + j*2-150),
+			color = rgba(105+i, 105+j, 5+i+j, 255),
+			mass = 1,
+			gravity_mult = 2,
+			restitution = 1
+		})
+	end
 		--universe:add_static(atom {
 		--	pos = vec2(config_table.resolution_w/2 + i, config_table.resolution_h/2 + j),
 		--	color = rgba(0, 255-i*j/40000*255-j+i, i*j/40000*255+j-i, 255),
 		--	mass = 1
 		--})
 		
-		universe.particles:add(atom {
-			pos = vec2(10 + i,  3),
-			color = rgba(randval(0, 255), randval(0, 255), randval(0, 255), 255),
-			mass = 1,
-			gravity_mult = 0,
-			restitution = 1
-		})
 end
 
 
@@ -87,6 +94,7 @@ end
 universum_camera = create_world_camera_entity(world, function() 
 	universe:render()
 end)
+--universum_camera.script:set_zoom_level(-980)
 
 SHOULD_QUIT_FLAG = false
 
