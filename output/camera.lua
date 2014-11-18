@@ -33,6 +33,7 @@ function create_world_camera_entity(owner_world, drawing_routine)
 	#version 330
 	
 	uniform mat4 projection_matrix;
+	uniform vec2 view_offset;
 	layout(location = 0) in vec2 position;
 	layout(location = 2) in vec4 color;
 	
@@ -41,8 +42,8 @@ function create_world_camera_entity(owner_world, drawing_routine)
 	void main() 
 	{
 		vec4 output_vert;
-		output_vert.x = position.x;		
-		output_vert.y = position.y;				
+		output_vert.x = position.x + view_offset.x;		
+		output_vert.y = position.y + view_offset.y;				
 		output_vert.z = 0.0f;						
 		output_vert.w = 1.0f;
 		
@@ -71,6 +72,7 @@ function create_world_camera_entity(owner_world, drawing_routine)
 	my_shader_program:use()
 	
 	local projection_matrix_uniform = GL.glGetUniformLocation(my_shader_program.id, "projection_matrix")
+	local view_offset_uniform = GL.glGetUniformLocation(my_shader_program.id, "view_offset")
 	
 	return owner_world:create_entity (override(camera_archetype, {
 		transform = {
@@ -90,6 +92,11 @@ function create_world_camera_entity(owner_world, drawing_routine)
 				1, 
 				GL.GL_FALSE, 
 				orthographic_projection(0, visible_area.x, visible_area.y, 0, 0, 1):data()
+				)
+				
+				GL.glUniform2f(view_offset_uniform,
+				subject.transform.previous.pos.x,
+				subject.transform.previous.pos.y
 				)
 	
 				my_shader_program:use()

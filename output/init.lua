@@ -20,14 +20,13 @@ end
 
 universe.gravity = vec2(0, 0.001)
 
-
 for i=1, 80 do
 for j=1, 40 do
 	universe.particles:add(atom {
-				pos = vec2(850 + 0.5+i, config_table.resolution_h - 50 + j + 0.5 - 100),
+				pos = vec2(650 + 0.5+i, config_table.resolution_h - 50 + j + 0.5 - 100),
 				color = rgba(255, 0, 0, 255),
 				mass = 1000,
-				gravity_mult = 2,
+				gravity_mult = 1,
 				restitution = 10,
 				vel = vec2(-0.9, -0.1)
 			})
@@ -37,10 +36,10 @@ end
 for i=1, 150 do
 	for j=1, 150 do
 		universe.particles:add(atom {
-			pos = vec2(250 + 20 + i*3 + 0.5,  config_table.resolution_h - 20 - 161 + 3.5 + j*3-2*150),
+			pos = vec2(250 + 20 + i + 0.5,  config_table.resolution_h - 20 - 151 + j),
 			color = rgba(105+i, 105+j, 5+i+j, 255),
 			mass = 1,
-			gravity_mult = 0,
+			gravity_mult = 1,
 			restitution = 1
 		})
 	end
@@ -95,6 +94,7 @@ universum_camera = create_world_camera_entity(world, function()
 	universe:render()
 end)
 --universum_camera.script:set_zoom_level(-980)
+universum_camera.transform.current.pos = vec2(-200, -200)
 
 SHOULD_QUIT_FLAG = false
 
