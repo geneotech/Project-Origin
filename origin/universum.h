@@ -18,6 +18,9 @@ namespace origin {
 
 		augs::vec2<> gravity;
 
+		float timestep = 1.f;
+		augs::misc::timer timer;
+
 		std::vector<slot> space;
 		std::vector<particle> particles;
 		std::vector<particle> static_particles;
@@ -37,6 +40,8 @@ namespace origin {
 		augs::misc::timer color_timer;
 
 		void simulate();
+		void clear_static();
+		void save_ss();
 
 		unsigned point_buffer;
 

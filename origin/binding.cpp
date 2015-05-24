@@ -4,9 +4,32 @@
 #include "utilities/lua_state_wrapper.h"
 #include "misc/vector_wrapper.h"
 
+#include <cmath>
+
+bool is_prime(int number)
+{
+	if (number<2)
+		return false;
+	if (number == 2)
+		return true;
+	if (number % 2 == 0)
+		return false;
+
+	int sq = sqrt(number);
+
+	for (int i = 3; i <= sq; i += 2)
+	{
+		if (number%i == 0)
+			return false;
+	}
+	return true;
+}
+
 namespace origin {
 	void universum::bind(augs::lua_state_wrapper& wrapper) {
 		luabind::module(wrapper.raw)[
+			luabind::def("is_prime", is_prime),
+
 			luabind::class_<particle>("origin_particle")
 				.def(luabind::constructor<>())
 				.def_readwrite("color", &particle::color)
@@ -30,8 +53,12 @@ namespace origin {
 				.def("render", &universum::render)
 				.def("add_static", &universum::add_static)
 				.def("init_render_state", &universum::init_render_state)
+				.def("clear_static", &universum::clear_static)
+				.def("save_ss", &universum::save_ss)
 				.def_readwrite("gravity", &universum::gravity)
+				.def_readwrite("timestep", &universum::timestep)
 				.def_readwrite("particles", &universum::particles)
+				.def_readwrite("static_particles", &universum::static_particles)
 		];
 	}
 }
